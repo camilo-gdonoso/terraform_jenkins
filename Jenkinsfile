@@ -25,9 +25,9 @@ pipeline {
             steps {
                 script {
                     dir("terraform") {
-                        sh 'pwd; terraform init'
-                        sh 'pwd; terraform plan -out tfplan || true'
-                        sh 'pwd; terraform show -no-color tfplan > tfplan.txt || true'
+                        sh 'terraform init'
+                        sh 'terraform plan -out tfplan || true'
+                        sh 'terraform show -no-color tfplan > tfplan.txt || true'
                     }
                 }
             }
