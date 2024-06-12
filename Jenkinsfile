@@ -23,9 +23,13 @@ pipeline {
 
         stage('Plan') {
             steps {
-                sh 'pwd; terraform init'
-                sh 'pwd; terraform plan -out tfplan || true'
-                sh 'pwd; terraform show -no-color tfplan > tfplan.txt || true'
+                script {
+                    dir("terraform") {
+                        sh 'pwd; terraform init'
+                        sh 'pwd; terraform plan -out tfplan || true'
+                        sh 'pwd; terraform show -no-color tfplan > tfplan.txt || true'
+                    }
+                }
             }
         }
         stage('Approval') {
