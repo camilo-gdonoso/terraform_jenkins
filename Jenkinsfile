@@ -52,7 +52,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                sh 'terraform apply -input=false tfplan'
+                bat 'terraform apply -input=false tfplan'
             }
         }
     }
