@@ -25,14 +25,9 @@ agent  any
             steps {
                 script {
                     dir("terraform") {
-                        if (isUnix()) {
                         sh 'nohup terraform init'
                         sh 'nohup terraform plan -out tfplan || true'
                         sh 'nohup terraform show -no-color tfplan > tfplan.txt || true'
-                    }   else {
-                        sh 'terraform init'
-                        sh 'terraform plan -out tfplan || true'
-                        sh 'terraform show -no-color tfplan > tfplan.txt || true'
                     }
                     }
                 }
