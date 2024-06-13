@@ -15,22 +15,28 @@ pipeline {
         stage('Verify Terraform') {
             steps {
                 script {
-                    // Ejecuta el comando para verificar la versión de Terraform
-                    bat 'terraform --version'
+                    {
+                         bat 'terraform --version'
+                    }
                 }
             }
         }
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/camilo-gdonoso/terraform_jenkins.git'
+                script{
+                    dir('terraform_jenkins')
+                    {
+                        git branch: 'main', url: 'https://github.com/camilo-gdonoso/terraform_jenkins.git'
+                    }
+                }
             }
         }
 
         stage('Plan') {
             steps {
-                bat 'terraform init'
-                bat 'terraform plan -out tfplan'
-                bat 'terraform show -no-color tfplan > tfplan.txt'
+                bat 'cd terraform_jenkins && terraform init'
+                bat 'cd terraform_jenkins && terraform plan -out tfplan'
+                bat 'cd terraform_jenkins && terraform show -no-color tfplan > tfplan.txt'
             }
         }
 
