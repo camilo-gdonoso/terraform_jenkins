@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Verify Terraform') {
             steps {
-                sh 'terraform --version'
+                bat 'terraform --version'
             }
         }
         stage('Checkout') {
@@ -25,9 +25,9 @@ pipeline {
 
         stage('Plan') {
             steps {
-                sh 'cd terraform_jenkins && terraform init'
-                sh 'cd terraform_jenkins && terraform plan -out tfplan'
-                sh 'cd terraform_jenkins && terraform show -no-color tfplan > tfplan.txt'
+                bat 'cd terraform_jenkins && terraform init'
+                bat 'cd terraform_jenkins && terraform plan -out tfplan'
+                bat 'cd terraform_jenkins && terraform show -no-color tfplan > tfplan.txt'
             }
         }
 
@@ -42,14 +42,14 @@ pipeline {
                 script {
                     def plan = readFile 'tfplan.txt'
                     input message: "Do you want to apply the plan?",
-                           parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+                        parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                 }
             }
         }
 
         stage('Apply') {
             steps {
-                sh 'terraform apply -input=false tfplan'
+                bat 'terraform apply -input=false tfplan'
             }
         }
     }
