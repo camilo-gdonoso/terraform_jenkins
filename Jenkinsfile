@@ -9,7 +9,10 @@ pipeline {
     }
 
     agent any
-
+    environment {
+    // Ajusta la ruta al directorio donde está instalado Terraform
+    PATH = "${env.PATH};C:\\Program Files (x86)\\Terraform"
+    }
     stages {
         stage('Checkout') {
             steps {
