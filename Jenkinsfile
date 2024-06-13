@@ -6,7 +6,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        PATH = "${env.PATH};C:\\Program Files (x86)\\Terraform"
+        TERRAFORM_PATH = "${env.PATH};C:\\Program Files (x86)\\Terraform"
     }
 
     agent any
@@ -14,33 +14,24 @@ pipeline {
     stages {
         stage('Verify Terraform') {
             steps {
-                script {
-                    {
-                         bat 'terraform --version'
-                    }
-                }
+                sh 'terraform --version'
             }
         }
         stage('Checkout') {
             steps {
-                script{
-                    dir('terraform_jenkins')
-                    {
-                        git branch: 'main', url: 'https://github.com/camilo-gdonoso/terraform_jenkins.git'
-                    }
-                }
+                git branch: 'main', url: 'https://github.com/camilo-gdonoso/terraform_jenkins.git'
             }
         }
 
         stage('Plan') {
             steps {
-                bat 'cd terraform_jenkins && terraform init'
-                bat 'cd terraform_jenkins && terraform plan -out tfplan'
-                bat 'cd terraform_jenkins && terraform show -no-color tfplan > tfplan.txt'
+                sh 'cd terraform_jenkins && terraform init'
+                sh 'cd terraform_jenkins && terraform plan -out tfplan'
+                sh 'cd terraform_jenkins && terraform show -no-color tfplan > tfplan.txt'
             }
         }
 
-        stage('Approval') {
+        stage('Approve') {
             when {
                 not {
                     expression { params.autoApprove }
@@ -58,7 +49,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                bat 'terraform apply -input=false tfplan'
+                sh 'terraform apply -input=false tfplan'
             }
         }
     }
