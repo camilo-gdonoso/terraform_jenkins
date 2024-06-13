@@ -23,11 +23,21 @@ pipeline {
 
         stage('Plan') {
             steps {
-                sh 'pwd;cd terraform/ ; terraform init'
-                sh "pwd;cd terraform/ ; terraform plan -out tfplan"
-                sh 'pwd;cd terraform/ ; terraform show -no-color tfplan > tfplan.txt'
+                script {
+                    dir("terraform") {
+                        if (isUnix()) {
+                        sh 'nohup terraform init'
+                        sh 'nohup terraform plan -out tfplan || true'
+                        sh 'nohup terraform show -no-color tfplan > tfplan.txt || true'
+                    }  else {
+                        sh 'terraform init'
+                        sh 'terraform plan -out tfplan || true'
+                        sh 'terraform show -no-color tfplan > tfplan.txt || true'
+                    }
+                    }
+                }
             }
-        }
+                    }
         stage('Approval') {
            when {
                not {
