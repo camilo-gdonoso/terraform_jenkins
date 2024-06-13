@@ -3,10 +3,10 @@ pipeline {
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     }
 
-    environment {
+   environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        TERRAFORM_PATH = "${env.PATH};C:\\Program Files (x86)\\Terraform"
+        PATH = "${env.PATH};C:\\Program Files (x86)\\Terraform"
     }
 
     agent any
