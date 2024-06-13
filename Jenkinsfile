@@ -8,14 +8,14 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     }
 
-   agent  any
+agent  any
     stages {
         stage('checkout') {
             steps {
-                 script{
+                script{
                         dir("terraform")
                         {
-                            git "https://github.com/yeshwanthlm/Terraform-Jenkins.git"
+                            git "https://github.com/camilo-gdonoso/terraform_jenkins.git"
                         }
                     }
                 }
@@ -25,34 +25,28 @@ pipeline {
             steps {
                 script {
                     dir("terraform") {
-                        if (isUnix()) {
-                        sh 'nohup terraform init'
-                        sh 'nohup terraform plan -out tfplan || true'
-                        sh 'nohup terraform show -no-color tfplan > tfplan.txt || true'
-                    }  else {
                         sh 'terraform init'
                         sh 'terraform plan -out tfplan || true'
                         sh 'terraform show -no-color tfplan > tfplan.txt || true'
-                    }
                     }
                 }
             }
                     }
         stage('Approval') {
-           when {
-               not {
-                   equals expected: true, actual: params.autoApprove
-               }
-           }
+        when {
+            not {
+                equals expected: true, actual: params.autoApprove
+            }
+        }
 
-           steps {
-               script {
+        steps {
+            script {
                     def plan = readFile 'terraform/tfplan.txt'
                     input message: "Do you want to apply the plan?",
                     parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-               }
-           }
-       }
+            }
+            }
+        }
 
         stage('Apply') {
             steps {
@@ -61,4 +55,4 @@ pipeline {
         }
     }
 
-  }
+}
