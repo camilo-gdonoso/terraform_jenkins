@@ -4,16 +4,20 @@ pipeline {
     }
 
     environment {
-        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
+        PATH = "${env.PATH};C:\\Program Files (x86)\\Terraform"
     }
 
     agent any
-    environment {
-    // Ajusta la ruta al directorio donde está instalado Terraform
-    PATH = "${env.PATH};C:\\Program Files (x86)\\Terraform"
-    }
+
     stages {
+        stage('Verify Terraform') {
+            steps {
+                bat 'terraform --version'
+            }
+        }
+
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/camilo-gdonoso/terraform_jenkins.git'
@@ -24,7 +28,6 @@ pipeline {
             steps {
                 bat 'terraform init'
                 bat 'terraform plan -out tfplan'
-                bat 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
 
@@ -37,7 +40,7 @@ pipeline {
 
             steps {
                 script {
-                    def plan = readFile 'tfplan.txt'
+                    def plan = readFile 'tfplan'
                     input message: "Do you want to apply the plan?",
                            parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                 }
