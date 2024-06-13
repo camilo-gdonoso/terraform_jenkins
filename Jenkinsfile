@@ -25,9 +25,9 @@ pipeline {
 
         stage('Plan') {
             steps {
-                bat 'cd terraform_jenkins/ ; terraform init'
-                bat 'cd terraform_jenkins/ ; terraform plan -out tfplan'
-                bat 'cd terraform_jenkins/ ; terraform show -no-color tfplan > tfplan.txt'
+                bat 'terraform init'
+                bat 'terraform plan -out tfplan'
+                bat 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
 
