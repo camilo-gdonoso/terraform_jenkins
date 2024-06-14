@@ -27,5 +27,8 @@ echo "<html><body><h1>Hello, World!</h1></body></html>" > C:/nginx/html/index.ht
 :: Iniciar NGINX
 echo Iniciando NGINX...
 nginx
+:: Reiniciar NGINX
+echo Reiniciando NGINX...
+nginx -s reload
 
 echo NGINX instalado y configurado exitosamente.
