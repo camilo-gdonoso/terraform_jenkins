@@ -14,7 +14,7 @@ environment {
     stages {
         stage('Verify Terraform') {
             steps {
-                sh 'terraform --version'
+                bat 'terraform --version'
             }
         }
         
@@ -26,9 +26,9 @@ environment {
 
         stage('Plan') {
             steps {
-                sh 'terraform init'
-                sh 'terraform plan -out tfplan'
-                sh 'terraform show -no-color tfplan > tfplan.txt'
+                bat 'terraform init'
+                bat 'terraform plan -out tfplan'
+                bat 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
 
@@ -50,12 +50,12 @@ environment {
 
         stage('Apply') {
             steps {
-                sh 'terraform apply -input=false tfplan'
+                bat 'terraform apply -input=false tfplan'
             }
         }
         stage('Show Output') {
             steps {
-                sh '''
+                bat '''
                     terraform output
                 '''
             }
