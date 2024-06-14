@@ -17,20 +17,6 @@ environment {
                 bat 'terraform --version'
             }
         }
-
-        stage('Test Bash Script') {
-            steps {
-                script {
-                    sh '''
-                        #!/bin/bash
-                        echo "Running a bash script"
-                        echo "Current user: $(whoami)"
-                        echo "Current directory: $(pwd)"
-                        echo "Date: $(date)"
-                    '''
-                }
-            }
-        }
         
         stage('Checkout') {
             steps {
