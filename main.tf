@@ -2,6 +2,7 @@
 
 provider "aws" {
   region = "us-east-2" # Cambia a la región que prefieras
+  version = "~> 5.0"
 }
 
 # Creación de un grupo de seguridad que permita el acceso SSH y HTTP
