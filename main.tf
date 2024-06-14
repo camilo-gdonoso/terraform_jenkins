@@ -23,7 +23,7 @@ resource "aws_instance" "web_server" {
       connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = file("C:/Users/HP/.ssh") # Update with your private key path
+      private_key = file("C:/Users/HP/.ssh/id_rsa") # Update with your private key path
       host        = self.public_ip
     }
     inline = [
@@ -39,3 +39,4 @@ resource "aws_instance" "web_server" {
 output "public_ip" {
   value = aws_instance.web_server.public_ip
 }
+
