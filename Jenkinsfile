@@ -1,17 +1,14 @@
 pipeline {
     parameters {
-        booleanParam(name: 'autoApprovePlan', 
-                     defaultValue: false, 
-                     description: 'Automatically run apply after generating plan?')
+        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
     }
 
-    environment {
+environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        TERRAFORM_PATH        = 'C:\\Program Files (x86)\\Terraform'
-        PATH                  = "${env.PATH};${TERRAFORM_PATH}"
+        PATH = "${env.PATH};C:\\Program Files (x86)\\Terraform"
     }
-
+    // prueba de automatico
     agent any
 
     stages {
@@ -20,7 +17,7 @@ pipeline {
                 bat 'terraform --version'
             }
         }
-
+        
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/camilo-gdonoso/terraform_jenkins.git'
@@ -31,21 +28,22 @@ pipeline {
             steps {
                 bat 'terraform init'
                 bat 'terraform plan -out tfplan'
+                bat 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
 
         stage('Approve') {
             when {
-                not { expression { params.autoApprovePlan } }
+                not {
+                    expression { params.autoApprove }
+                }
             }
 
             steps {
                 script {
-                    def plan = readFile('tfplan')
-                    input message: "Do you want to apply the plan?",
-                           parameters: [text(name: 'Plan', 
-                                             description: 'Please review the plan', 
-                                             defaultValue: plan)]
+                    def plan = readFile 'tfplan.txt'
+                    input message: "Quieres aplicar el plan?",
+                        parameters: [text(name: 'Plan', description: 'Porfa revisa el plan', defaultValue: plan)]
                 }
             }
         }
@@ -55,21 +53,20 @@ pipeline {
                 bat 'terraform apply -input=false tfplan'
             }
         }
-
         stage('Show Output') {
             steps {
                 script {
-                    def logFile = sh(script: 'cat /tmp/install_nginx_log.txt', returnStdout: true).trim()
-                    echo "NGINX Installation Log: ${logFile}"
+                    def logFile = bat(script: 'type C:\\tmp\\install_nginx_log.txt', returnStdout: true).trim()
+                    echo "Registro de la instalación de NGINX: ${logFile}"
                 }
             }
         }
-    }
 
     post {
         always {
             cleanWs()
         }
     }
+}
 }
 
