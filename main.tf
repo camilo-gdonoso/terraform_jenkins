@@ -1,18 +1,35 @@
+# main.tf
+
 provider "aws" {
-  region = "us-east-1"
+  region = "us-east-2" # Cambia a la región que prefieras
 }
 
-resource "aws_instance" "web" {
-  ami           = "ami-05fa00d4c63e32376" # Amazon Linux 2 AMI
-  instance_type = "t2.micro"
-  user_data = file("scripts/install_nginx.bat")
-  #prueba
+resource "aws_instance" "web_server" {
+  ami           = "ami-0c55b159cbfafe1f0" # AMI de Ubuntu 20.04
+  instance_type = "t2.micro" # Cambia al tipo de instancia que desees
 
   tags = {
-    Name = "NginxServer Nuevo"
+    Name = "HelloWorldWebServer"
+  }
+
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    #private_key = file("~/.ssh/id_rsa") # Cambia a la ruta de tu clave privada SSH
+    host        = self.public_ip
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt update",
+      "sudo apt install -y apache2",
+      "sudo systemctl start apache2",
+      "sudo systemctl enable apache2",
+      "echo 'Hello, World!' | sudo tee /var/www/html/index.html"
+    ]
   }
 }
 
-output "instance_ip" {
-  value = aws_instance.web.public_ip
+output "public_ip" {
+  value = aws_instance.web_server.public_ip
 }

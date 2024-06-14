@@ -17,12 +17,12 @@ environment {
                 bat 'terraform --version'
             }
         }
-        stage('Run Batch Script') {
+       /* stage('Run Batch Script') {
             steps {
                 bat 'scripts/install_nginx.bat'
             }
         }
-        
+        */
         stage('Checkout') {
             steps {
                 git branch: 'master', url: 'https://github.com/camilo-gdonoso/terraform_jenkins.git'
