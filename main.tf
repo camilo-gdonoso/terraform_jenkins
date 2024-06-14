@@ -41,13 +41,6 @@ resource "aws_instance" "web_server" {
     Name = "HelloWorldWebServer"
   }
 
-  connection {
-    type        = "ssh"
-    user        = "ubuntu"
-    private_key = file("C:/Users/HP/.ssh/id_rsa")
-    host        = self.public_ip
-  }
-
   provisioner "remote-exec" {
     connection {
     type        = "ssh"
