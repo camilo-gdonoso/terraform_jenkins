@@ -1,12 +1,11 @@
 @echo off
+@echo off
 
-:: Instalar Chocolatey (si no está instalado)
-echo Verificando la instalación de Chocolatey...
-if not exist "C:\ProgramData\chocolatey" (
-    echo Instalando Chocolatey...
-    @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
-)
+:: Add Chocolatey path to PATH environment variable
+set PATH=%PATH%;C:\ProgramData\chocolatey\bin
 
+:: Rest of your .bat file commands
+choco install nginx -y
 :: Instalar NGINX
 echo Instalando NGINX...
 choco install nginx -y
