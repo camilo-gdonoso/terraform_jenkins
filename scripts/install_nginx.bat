@@ -13,7 +13,7 @@ choco install nginx -y
 :: Configurar NGINX
 echo Configurando NGINX...
 echo "server {
-    listen 80;
+    listen 60;
     server_name localhost;
     location / {
         root C:/nginx/html;
