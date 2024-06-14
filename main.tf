@@ -12,20 +12,15 @@ resource "aws_instance" "web_server" {
     Name = "HelloWorldWebServer"
   }
 
-/*  connection {
+connection {
     type        = "ssh"
     user        = "ubuntu"
-    #private_key = file("~/.ssh/id_rsa") # Cambia a la ruta de tu clave privada SSH
+    private_key = file("C:/Users/HP/.ssh/id_rsa") # Cambia a la ruta de tu clave privada SSH
     host        = self.public_ip
-  }
-*/
+}
+
   provisioner "remote-exec" {
-      connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = file("C:/Users/camilo/.ssh/id_rsa") # Update with your private key path
-      host        = self.public_ip
-    }
+
     inline = [
       "sudo apt update",
       "sudo apt install -y apache2",
