@@ -53,6 +53,13 @@ environment {
                 bat 'terraform apply -input=false tfplan'
             }
         }
+        stage('Show Output') {
+            steps {
+                bat '''
+                    terraform output
+                '''
+            }
+        }
     }
 }
 
