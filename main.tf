@@ -23,7 +23,7 @@ resource "aws_instance" "web_server" {
       connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = file("~/.ssh/id_rsa") # Update with your private key path
+      private_key = file("C:/Users/camilo/.ssh/id_rsa") # Update with your private key path
       host        = self.public_ip
     }
     inline = [
