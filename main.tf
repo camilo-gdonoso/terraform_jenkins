@@ -2,23 +2,13 @@ provider "aws" {
   region = "us-east-2"
 }
 
-resource "aws_instance" "web_server" {
-  ami           = data.aws_ami.amazon_linux_2.id
+resource "aws_instance" "foo" {
+  ami           = "ami-0c55b159cbfafe1f0" # Amazon Linux 2 AMI
   instance_type = "t2.micro"
-  user_data     = file("scripts/install_nginx.sh")
+  user_data = file("scripts/install_nginx.sh")
 
   tags = {
     Name = "NginxServer"
-  }
-}
-
-data "aws_ami" "amazon_linux_2" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["amzn2-ami-hvm-*"]
   }
 }
 
