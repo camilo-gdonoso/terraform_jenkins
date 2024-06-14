@@ -20,6 +20,12 @@ resource "aws_instance" "web_server" {
   }
 */
   provisioner "remote-exec" {
+      connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("C:/Users/HP/.ssh") # Update with your private key path
+      host        = self.public_ip
+    }
     inline = [
       "sudo apt update",
       "sudo apt install -y apache2",
