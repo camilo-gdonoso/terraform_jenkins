@@ -32,7 +32,7 @@ resource "aws_key_pair" "ssh_key" {
 
 # Creación de una instancia EC2
 resource "aws_instance" "web_server" {
-  ami           = "ami-0c55b159cbfafe1f0" # AMI de Ubuntu 20.04
+  ami           = "ami-0f58b397bc5c1f2e8" # AMI de Ubuntu 20.04
   instance_type = "t2.micro"
   key_name      = aws_key_pair.ssh_key.key_name
 
