@@ -1,22 +1,31 @@
 @echo off
+@echo off
 
-:: Install NGINX using Chocolatey
+:: Add Chocolatey path to PATH environment variable
+set PATH=%PATH%;C:\ProgramData\chocolatey\bin
+
+:: Rest of your .bat file commands
+choco install nginx -y
+:: Instalar NGINX
+echo Instalando NGINX...
 choco install nginx -y
 
-:: Configure NGINX
+:: Configurar NGINX
+echo Configurando NGINX...
 echo "server {
-    listen 90;
-    server_name localhost;
+    listen 95;
+    server_name localhost_nginx;
     location / {
-        root C:\nginx\html;
+        root C:/nginx/html;
         index index.html;
     }
-}" > C:\nginx\conf\nginx.conf
+}" > C:/nginx/conf/nginx.conf
 
-:: Create an index.html file
-echo "<html><body><h1>Hello, World!</h1></body></html>" > C:\nginx\html\index.html
+:: Crear un archivo index.html
+echo "<html><body><h1>Hello, World!</h1></body></html>" > C:/nginx/html/index.html
 
-:: Start NGINX
+:: Iniciar NGINX
+echo Iniciando NGINX...
 nginx
 
-echo NGINX installed and configured successfully.
+echo NGINX instalado y configurado exitosamente.
