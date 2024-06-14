@@ -1,41 +1,62 @@
 # main.tf
-terraform{
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-      version = "~> 4.0"
-    }
+
+provider "aws" {
+  region = "us-east-2" # Cambia a la región que prefieras
+}
+
+# Creación de un grupo de seguridad que permita el acceso SSH y HTTP
+resource "aws_security_group" "allow_ssh_http" {
+  name        = "allow_ssh_http"
+  description = "Allow SSH and HTTP inbound traffic"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Para mayor seguridad, reemplaza con tu IP
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
-provider "aws" {
-  region = "ap-south-1" # Cambia a la región que prefieras
-  access_key ="variables.access_key"
-  secret_key = "variables.secret_key"
+
+# Creación de un par de claves SSH
+resource "aws_key_pair" "ssh_key" {
+  key_name   = "my-keypair"   # Nombre descriptivo para el par de claves
+  public_key = file("C:/Users/HP/.ssh/id_rsa.pub") # Ruta a tu clave pública
 }
 
-resource "tls_private_key" "rsa_4096" {
-  algorithm = "RSA"
-  rsa_bits= 4096
-}
-
-variable "key_name" {}
-
-resource "aws_key_pair" "key_pair" {
-  key_name = var.key_name
-  public_key = tls_private_key.rsa_4096.public_key_openssh
-}
-
-resource "local_file" "private_key" {
-  content = tls_private_key.rsa_4096.private_key_pem
-  filename = var.key_name
-}
-
-resource "aws_instance" "public" {
-  ami = "ami-0f58b397bc5c1f2e8"
+# Creación de una instancia EC2
+resource "aws_instance" "web_server" {
+  ami           = "ami-0c55b159cbfafe1f0" # AMI de Ubuntu 20.04
   instance_type = "t2.micro"
-  key_name = aws_key_pair.key_pair.key_name
+  key_name      = aws_key_pair.ssh_key.key_name
+
+  vpc_security_group_ids = [aws_security_group.allow_ssh_http.id]
+
   tags = {
-    Name = "public instance"
+    Name = "HelloWorldWebServer"
+  }
+
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("C:/Users/HP/.ssh/id_rsa")
+      host        = self.public_ip
+    }
+
+    inline = [
+      "sudo apt update -y",
+      "sudo apt install -y apache2",
+      "sudo systemctl start apache2",
+      "sudo systemctl enable apache2",
+      "echo 'Hello, World!' | sudo tee /var/www/html/index.html"
+    ]
   }
 }
 
