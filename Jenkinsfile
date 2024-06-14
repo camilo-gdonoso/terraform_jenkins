@@ -62,11 +62,6 @@ environment {
             }
         }
 
-    post {
-        always {
-            cleanWs()
-        }
     }
-}
 }
 
