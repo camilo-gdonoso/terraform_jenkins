@@ -1,18 +1,21 @@
 @echo off
 :: Actualizar el sistema
+echo Actualizando el sistema...
 yum update -y
 
 :: Instalar NGINX
+echo Instalando NGINX...
 amazon-linux-extras install nginx1 -y
 
 :: Iniciar NGINX
-net start nginx
+echo Iniciando NGINX...
+systemctl start nginx
 
 :: Habilitar el inicio automático de NGINX
-sc config nginx start= auto
+echo Habilitando el inicio automático de NGINX...
+systemctl enable nginx
 
 :: Crear un archivo index.html
-echo Hello, World! > C:\Program Files\nginx\html\index.html
+echo "Hello, World!" > /usr/share/nginx/html/index.html
 
-:: Añadir un comando para registrar la ejecución del script
-echo Script install_nginx.bat ejecutado correctamente > C:\tmp\install_nginx_log.txt
+echo NGINX instalado y configurado exitosamente.

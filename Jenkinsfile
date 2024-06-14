@@ -24,6 +24,12 @@ environment {
             }
         }
 
+        stage('Run Batch Script') {
+            steps {
+                bat 'scripts/install_nginx.bat'
+            }
+        }
+
         stage('Plan') {
             steps {
                 bat 'terraform init'
