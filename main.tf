@@ -1,8 +1,7 @@
 # main.tf
 
 provider "aws" {
-  region = "us-east-2" # Cambia a la región que prefieras
-  version = "~> 5.0"
+  region = "us-east-1" # Cambia a la región que prefieras
 }
 
 # Creación de un grupo de seguridad que permita el acceso SSH y HTTP
