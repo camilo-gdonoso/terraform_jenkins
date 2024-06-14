@@ -17,6 +17,21 @@ environment {
                 bat 'terraform --version'
             }
         }
+
+        stage('Test Bash Script') {
+            steps {
+                script {
+                    sh '''
+                        #!/bin/bash
+                        echo "Running a bash script"
+                        echo "Current user: $(whoami)"
+                        echo "Current directory: $(pwd)"
+                        echo "Date: $(date)"
+                    '''
+                }
+            }
+        }
+        
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/camilo-gdonoso/terraform_jenkins.git'
@@ -41,8 +56,8 @@ environment {
             steps {
                 script {
                     def plan = readFile 'tfplan.txt'
-                    input message: "Do you want to apply the plan?",
-                        parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+                    input message: "Quieres aplicar el plan?",
+                        parameters: [text(name: 'Plan', description: 'Porfa revisa el plan', defaultValue: plan)]
                 }
             }
         }
