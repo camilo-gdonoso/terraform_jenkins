@@ -6,7 +6,8 @@ pipeline {
 environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        PATH = "${env.PATH};C:\\Program Files (x86)\\Terraform"
+        PATH = "${env.PATH};C:\\Program Files (x86)\\Terraform";
+        PATH = "${env.PATH};C:\\ProgramData\\chocolatey"
     }
     // prueba de automatico
     agent any
@@ -15,6 +16,11 @@ environment {
         stage('Verify Terraform') {
             steps {
                 bat 'terraform --version'
+            }
+        }
+        stage('Verify Terraform') {
+            steps {
+                bat 'choco -v'
             }
         }
         
