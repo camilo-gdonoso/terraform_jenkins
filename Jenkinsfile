@@ -20,7 +20,7 @@ environment {
         
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/camilo-gdonoso/terraform_jenkins.git'
+                git branch: 'master', url: 'https://github.com/camilo-gdonoso/terraform_jenkins.git'
             }
         }
 
