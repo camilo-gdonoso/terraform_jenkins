@@ -19,7 +19,7 @@ environment {
         }
         stage('Install NGINX') {
             steps {
-                powershell 'install_nginx.ps1
+                powershell 'install_nginx.ps1'
             }
         }
         
