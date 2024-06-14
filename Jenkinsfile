@@ -17,6 +17,11 @@ environment {
                 bat 'terraform --version'
             }
         }
+        stage('Install NGINX') {
+            steps {
+                powershell 'install_nginx.ps1
+            }
+        }
         
         stage('Checkout') {
             steps {
