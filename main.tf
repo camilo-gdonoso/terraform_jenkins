@@ -49,9 +49,16 @@ resource "aws_instance" "web_server" {
   }
 
   provisioner "remote-exec" {
-    inline = [
-      "sudo apt update",
-      "sudo apt install -f -y apache2",
+    connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = file("C:/Users/HP/.ssh/id_rsa")
+    host        = self.public_ip
+  }
+
+  inline = [
+      "sudo apt update -y",
+      "sudo apt install -y apache2",
       "sudo systemctl start apache2",
       "sudo systemctl enable apache2",
       "echo 'Hello, World!' | sudo tee /var/www/html/index.html"
