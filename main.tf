@@ -12,13 +12,13 @@ resource "aws_instance" "web_server" {
     Name = "HelloWorldWebServer"
   }
 
-  connection {
+/*  connection {
     type        = "ssh"
     user        = "ubuntu"
     #private_key = file("~/.ssh/id_rsa") # Cambia a la ruta de tu clave privada SSH
     host        = self.public_ip
   }
-
+*/
   provisioner "remote-exec" {
     inline = [
       "sudo apt update",
