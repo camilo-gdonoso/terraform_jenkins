@@ -17,12 +17,13 @@ environment {
                 bat 'terraform --version'
             }
         }
-       /* stage('Run Batch Script') {
+
+        stage('Run Batch Script') {
             steps {
                 bat 'scripts/install_nginx.bat'
             }
         }
-        */
+        
         stage('Checkout') {
             steps {
                 git branch: 'master', url: 'https://github.com/camilo-gdonoso/terraform_jenkins.git'
@@ -30,7 +31,7 @@ environment {
         }
 
 
-        stage('Plan') {
+        stage('Initialize and Plan') {
             steps {
                 bat 'terraform init'
                 bat 'terraform plan -out tfplan'
@@ -56,7 +57,7 @@ environment {
 
         stage('Apply') {
             steps {
-                bat 'terraform apply -input=false tfplan'
+                bat 'terraform apply -auto-approve'
             }
         }
     }

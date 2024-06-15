@@ -41,19 +41,19 @@ resource "aws_key_pair" "ssh_key" {
 resource "aws_instance" "web_server" {
   ami           = "ami-08a0d1e16fc3f61ea" # Amazon Linux AMI
   instance_type = "t2.micro"
-  key_name      = aws_key_pair.ssh_key.key_name
+  //key_name      = aws_key_pair.ssh_key.key_name
 
   vpc_security_group_ids = [aws_security_group.allow_ssh_http.id]
 
   tags = {
     Name = "HelloWorld Nginx 303"
   }
-  provisioner "file" {
-    source      = "setup_nginx.sh"
-    destination = "/tmp/setup_nginx.sh"
-  }
+ // provisioner "file" {
+  //  source      = "setup_nginx.sh"
+  //  destination = "/tmp/setup_nginx.sh"
+  //}
 
-  provisioner "remote-exec" {
+ // provisioner "remote-exec" {
     /*
     connection {
       type        = "ssh"
@@ -62,9 +62,10 @@ resource "aws_instance" "web_server" {
       host        = self.public_ip
     }
 */
-  script = "/tmp/setup_nginx.sh"
+ // script = "/tmp/setup_nginx.sh"
 
-  }
+  //}
+  
 }
 
 # Output de la IP pública de la instancia
