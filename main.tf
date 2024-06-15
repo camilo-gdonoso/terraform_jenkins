@@ -3,15 +3,28 @@ provider "aws" {
   region = "us-west-2"
 }
 
-resource "aws_instance" "web_server" {
+resource "aws_instance" "nginx_server" {
   ami           = "ami-0c94855ba95c574c8"
   instance_type = "t2.micro"
+    user_data = <<-EOF
+              #!/bin/bash
+              sudo yum update -y
+              sudo amazon-linux-extras install nginx1.12 -y
+              echo "<html><body><h1>Hello, World</h1></body></html>" > /usr/share/nginx/html/index.html
+              sudo systemctl start nginx
+              sudo systemctl enable nginx
+              EOF
   tags = {
     Name = "HelloWorldServer 666"
   }
-  vpc_security_group_ids = [aws_security_group.web_server_security_group.id]
+}
+output "instance_ip" {
+  value = aws_instance.nginx_server.public_ip
 }
 
+  #vpc_security_group_ids = [aws_security_group.web_server_security_group.id]
+
+/*
 resource "aws_security_group" "web_server_security_group" {
   name        = "web_server_security_group"
   description = "Security group for web server"
@@ -67,3 +80,4 @@ resource "null_resource" "nginx_config" {
     ]
   }
   }
+*/
