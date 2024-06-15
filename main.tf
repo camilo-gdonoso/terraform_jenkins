@@ -39,28 +39,31 @@ resource "aws_key_pair" "ssh_key" {
 
 # Creación de una instancia EC2
 resource "aws_instance" "web_server" {
-  ami           = "ami-05fa00d4c63e32376" # AMI de Ubuntu 20.04
+  ami           = "ami-08a0d1e16fc3f61ea" # Amazon Linux AMI
   instance_type = "t2.micro"
   key_name      = aws_key_pair.ssh_key.key_name
 
   vpc_security_group_ids = [aws_security_group.allow_ssh_http.id]
 
   tags = {
-    Name = "HelloWorld Nginx 777"
+    Name = "HelloWorld Nginx 303"
+  }
+  provisioner "file" {
+    source      = "setup_nginx.sh"
+    destination = "/tmp/setup_nginx.sh"
   }
 
   provisioner "remote-exec" {
+    /*
     connection {
       type        = "ssh"
       user        = "ec2-user"
       private_key = file("C:/Users/HP/.ssh/mi_nueva_key.pem")
       host        = self.public_ip
     }
+*/
+  script = "/tmp/setup_nginx.sh"
 
-  inline = [
-      "chmod +x /tmp/setup_nginx.sh",
-      "sudo /tmp/setup_nginx.sh"
-    ]
   }
 }
 
