@@ -6,11 +6,12 @@ set "PATH=%PATH%;C:\ProgramData\chocolatey\bin"
 :: Install NGINX
 choco install nginx -y
 
+listen 8800 default_server;
+
 :: Configure NGINX
 echo Installing and configuring NGINX...
 (
 echo server {
-echo     listen 9090;
 echo     server_name localhost_nginx;
 echo     location / {
 echo         root C:/nginx/html;
