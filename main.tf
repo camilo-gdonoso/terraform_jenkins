@@ -9,11 +9,18 @@ resource "aws_security_group" "allow_ssh_http" {
   name        = "allow_ssh_http"
   description = "Allow SSH and HTTP inbound traffic"
 
-  ingress {
+   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # Para mayor seguridad, reemplaza con tu IP
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -27,7 +34,7 @@ resource "aws_security_group" "allow_ssh_http" {
 # Creación de un par de claves SSH
 resource "aws_key_pair" "ssh_key" {
   key_name   = "my-keypair"   # Nombre descriptivo para el par de claves
-  public_key = file("C:/Users/HP/.ssh/id_rsa.pub") # Ruta a tu clave pública
+  public_key = file("C:/Users/HP/.ssh/mi_nueva_key.pub") # Ruta a tu clave pública
 }
 
 # Creación de una instancia EC2
@@ -39,14 +46,14 @@ resource "aws_instance" "web_server" {
   vpc_security_group_ids = [aws_security_group.allow_ssh_http.id]
 
   tags = {
-    Name = "HelloWorld Nginx 2025"
+    Name = "HelloWorld Nginx 777"
   }
 
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = file("C:/Users/HP/.ssh/id_rsa")
+      private_key = file("C:/Users/HP/.ssh/mi_nueva_key.pem")
       host        = self.public_ip
     }
 
