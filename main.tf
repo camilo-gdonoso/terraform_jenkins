@@ -34,7 +34,7 @@ resource "aws_security_group" "allow_ssh_http" {
 # Creación de un par de claves SSH
 resource "aws_key_pair" "ssh_key" {
   key_name   = "my-keypair"   # Nombre descriptivo para el par de claves
-  public_key = file("C:/Users/HP/.ssh/mi_nueva_key.pub") # Ruta a tu clave pública
+  public_key = file("C:/Users/HP/.ssh/mi_nueva_key.pub") # Ruta a tu clave públicaa
 }
 
 # Creación de una instancia EC2
