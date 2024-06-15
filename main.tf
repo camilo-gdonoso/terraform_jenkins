@@ -9,8 +9,27 @@ resource "aws_instance" "web_server" {
   tags = {
     Name = "HelloWorldServer 666"
   }
+  vpc_security_group_ids = [aws_security_group.web_server_security_group.id]
 }
 
+resource "aws_security_group" "web_server_security_group" {
+  name        = "web_server_security_group"
+  description = "Security group for web server"
+
+  ingress {
+    from_port   = 9090
+    to_port     = 9090
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
 resource "null_resource" "nginx_config" {
   provisioner "remote-exec" {
     inline = [
