@@ -59,15 +59,6 @@ environment {
                 bat 'terraform apply -input=false tfplan'
             }
         }
-        stage('Show Output') {
-            steps {
-                script {
-                    def logFile = bat(script: 'type C:\\tmp\\install_nginx_log.txt', returnStdout: true).trim()
-                    echo "Registro de la instalación de NGINX: ${logFile}"
-                }
-            }
-        }
-
     }
 }
 
