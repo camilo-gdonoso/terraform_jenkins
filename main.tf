@@ -58,11 +58,8 @@ resource "aws_instance" "web_server" {
     }
 
   inline = [
-      "sudo apt update -y",
-      "sudo apt install -y nginx",
-      "sudo systemctl start nginx",
-      "sudo systemctl enable nginx",
-      "echo 'Hello, World!' | sudo tee /var/www/html/index.nginx-debian.html"
+      "chmod +x /tmp/setup_nginx.sh",
+      "sudo /tmp/setup_nginx.sh"
     ]
   }
 }
