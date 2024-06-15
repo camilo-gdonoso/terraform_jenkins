@@ -39,7 +39,7 @@ resource "aws_instance" "web_server" {
   vpc_security_group_ids = [aws_security_group.allow_ssh_http.id]
 
   tags = {
-    Name = "HelloWorld Nginx"
+    Name = "HelloWorld Nginx 2024"
   }
 
   provisioner "remote-exec" {
