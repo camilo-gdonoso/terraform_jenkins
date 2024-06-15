@@ -10,6 +10,20 @@ resource "aws_instance" "nginx_server" {
               #!/bin/bash
               sudo yum update -y
               sudo amazon-linux-extras install nginx1.12 -y
+                 echo "server {
+                  listen       8080;
+                  server_name  localhost;
+
+                  location / {
+                      root   /usr/share/nginx/html;
+                      index  index.html index.htm;
+                  }
+
+                  error_page   500 502 503 504  /50x.html;
+                  location = /50x.html {
+                      root   /usr/share/nginx/html;
+                  }
+              }" | sudo tee /etc/nginx/conf.d/default.conf
               echo "<html><body><h1>Hello, World</h1></body></html>" > /usr/share/nginx/html/index.html
               sudo systemctl start nginx
               sudo systemctl enable nginx
