@@ -27,7 +27,7 @@ resource "aws_security_group" "allow_ssh_http" {
 # Creación de un par de claves SSH
 resource "aws_key_pair" "ssh_key" {
   key_name   = "my-keypair"   # Nombre descriptivo para el par de claves
-  public_key = file("C:/Users/HP/.ssh/my_new_key.pub") # Ruta a tu clave pública
+  public_key = file("C:/Users/HP/.ssh/id_rsa.pub") # Ruta a tu clave pública
 }
 
 # Creación de una instancia EC2
@@ -39,14 +39,14 @@ resource "aws_instance" "web_server" {
   vpc_security_group_ids = [aws_security_group.allow_ssh_http.id]
 
   tags = {
-    Name = "HelloWorld Nginx 2024"
+    Name = "HelloWorld Nginx 2025"
   }
 
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = file("C:/Users/HP/.ssh/my_new_key")
+      private_key = file("C:/Users/HP/.ssh/id_rsa")
       host        = self.public_ip
     }
 
