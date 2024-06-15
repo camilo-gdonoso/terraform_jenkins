@@ -61,7 +61,7 @@ resource "aws_security_group" "web_security_group" {
 resource "null_resource" "nginx_config" {
   provisioner "remote-exec" {
     inline = [
-      "echo 'server { listen 80; location / { return 200 \"Hello World\"; }}' > /etc/nginx/conf.d/default.conf",
+      "echo 'server { listen 90; location / { return 200 \"Hello World\"; }}' > /etc/nginx/conf.d/default.conf",
       "sudo yum install -y nginx",
       "sudo systemctl restart nginx"
     ]
