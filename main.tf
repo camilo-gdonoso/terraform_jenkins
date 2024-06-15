@@ -52,7 +52,7 @@ resource "aws_instance" "web_server" {
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
-      user        = "ubuntu"
+      user        = "ec2-user"
       private_key = file("C:/Users/HP/.ssh/mi_nueva_key.pem")
       host        = self.public_ip
     }
