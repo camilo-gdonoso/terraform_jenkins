@@ -20,7 +20,7 @@ environment {
 
         stage('Run Batch Script') {
             steps {
-                bat 'scripts/install_nginx.bat'
+                bat 'setup_nginx.sh'
             }
         }
         
