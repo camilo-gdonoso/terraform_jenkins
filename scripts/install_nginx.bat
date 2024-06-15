@@ -10,7 +10,7 @@ choco install nginx -y
 echo Installing and configuring NGINX...
 (
 echo server {
-echo     listen 80;
+echo     listen 90;
 echo     server_name localhost_nginx;
 echo     location / {
 echo         root C:/nginx/html;
