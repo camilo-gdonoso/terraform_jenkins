@@ -17,7 +17,7 @@ resource "null_resource" "nginx_config" {
       "echo 'server { return 200 \"Hello World\"; }' > /tmp/default.conf",
       "sudo yum install -y nginx",
       "sudo mv /tmp/default.conf /etc/nginx/conf.d/default.conf",
-      "sudo systemctl restart nginx"
+      "sudo systemctl restart nginx -p 9090"
     ]
   }
 }
