@@ -55,7 +55,7 @@ resource "null_resource" "create_hello_world" {
       type        = "ssh"
       user        = "ec2-user"
       private_key = file("key_pair.pem")
-      host        = self.public_ip
+      host        = aws_instance.nginx_server.public_ip
     }
     inline = [
       "echo '<html><body><h1>Hello world</h1></body></html>' | sudo tee /usr/share/nginx/html/index.html",
