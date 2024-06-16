@@ -13,7 +13,7 @@ pipeline {
                 }
             }
         }
-        stage('Initializing Terraform'){
+        stage('Iniciando Terraform'){
             steps{
                 script{
                     dir('EKS'){
@@ -22,7 +22,7 @@ pipeline {
                 }
             }
         }
-        stage('Formatting Terraform Code'){
+        stage('Formateando Codigo Terraform'){
             steps{
                 script{
                     dir('EKS'){
@@ -31,7 +31,7 @@ pipeline {
                 }
             }
         }
-        stage('Validating Terraform'){
+        stage('Validando Terraform'){
             steps{
                 script{
                     dir('EKS'){
