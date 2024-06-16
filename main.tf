@@ -41,6 +41,8 @@ resource "aws_instance" "nginx_server" {
     sudo amazon-linux-extras install nginx1.12 -y
     sudo systemctl start nginx
     sudo systemctl enable nginx
+    echo "<html><body><h1>Hello world</h1></body></html>" | sudo tee /usr/share/nginx/html/index.html
+    sudo systemctl restart nginx
   EOF
 
   tags = {
