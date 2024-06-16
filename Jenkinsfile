@@ -18,12 +18,12 @@ environment {
             }
         }
 
-        stage('Set Up Nginx') {
+       /* stage('Set Up Nginx') {
             steps {
                 sh 'scripts/setup_nginx.sh'
             }
         }
-        
+        */
         stage('Checkout') {
             steps {
                 git branch: 'master', url: 'https://github.com/camilo-gdonoso/terraform_jenkins.git'
