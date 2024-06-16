@@ -35,18 +35,26 @@ resource "aws_instance" "nginx_server" {
   key_name      = "key_pair"
   security_groups = [aws_security_group.allow_ssh_ping.name]
 
-  user_data = <<-EOF
-    #!/bin/bash
-    sudo yum update -y
-    sudo amazon-linux-extras install nginx1.12 -y
-    sudo systemctl start nginx
-    sudo systemctl enable nginx
-    echo "<html><body><h1>Hello world</h1></body></html>" | sudo tee /usr/share/nginx/html/index.html
-    sudo systemctl restart nginx
-  EOF
-
+provisioner "remote-exec" {
+    inline = [
+      "sudo yum update -y",
+      "sudo amazon-linux-extras install nginx1.12 -y",
+      "sudo systemctl start nginx",
+      "sudo systemctl enable nginx",
+    ]
+  }
   tags = {
-    Name = "nginx_server con helloworld"
+    Name = "nginx_server oficial"
+  }
+}
+resource "null_resource" "create_hello_world" {
+  depends_on = [aws_instance.nginx_server]
+
+  provisioner "remote-exec" {
+    inline = [
+      "echo '<html><body><h1>Hello world</h1></body></html>' | sudo tee /usr/share/nginx/html/index.html",
+      "sudo systemctl restart nginx",
+    ]
   }
 }
 
