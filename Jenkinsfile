@@ -57,7 +57,7 @@ environment {
 
         stage('Apply') {
             steps {
-                sh 'terraform apply -auto-approve'
+                sh 'sudo -u ubuntu terraform apply -auto-approve'
             }
         }
     }
