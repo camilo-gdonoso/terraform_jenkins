@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    bucket = "my-eks-cluster-bucket"
-    key    = "eks/terraform.state"
+    bucket = "cicd-camilo-terraform-eks"
+    key    = "eks/terraform.tfstate"
     region = "us-east-1"
   }
 }
