@@ -5,20 +5,20 @@ provider "aws" {
 
 resource "aws_security_group" "allow_ssh_ping" {
   name        = "allow-ssh-ping"
-  description = "Permite tráfico SSH y ICMP (ping)"
+  description = "Permite trafico SSH y ICMP (ping)"
   
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Permite el tráfico SSH desde cualquier lugar
+    cidr_blocks = ["0.0.0.0/0"]  # Permite el trafico SSH desde cualquier lugar
   }
 
   ingress {
     from_port   = 0
     to_port     = 0
     protocol    = "icmp"
-    cidr_blocks = ["0.0.0.0/0"]  # Permite el tráfico ICMP desde cualquier lugar
+    cidr_blocks = ["0.0.0.0/0"]  # Permite el trafico ICMP desde cualquier lugar
   }
 
   egress {
