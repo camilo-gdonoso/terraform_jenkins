@@ -15,7 +15,7 @@ resource "aws_instance" "nginx_server" {
               sudo systemctl enable nginx
               EOF
   tags = {
-    Name = "HelloWorldServer 666"
+    Name = "HelloWorldServer 333"
   }
 }
 output "instance_ip" {
