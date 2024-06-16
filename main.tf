@@ -46,7 +46,7 @@ resource "aws_instance" "nginx_server" {
   EOF
 
   tags = {
-    Name = "nginx_server bkn"
+    Name = "nginx_server con helloworld"
   }
 }
 
