@@ -6,7 +6,7 @@ pipeline {
 environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        PATH = "${env.PATH};C:\\Program Files (x86)\\Terraform"
+        //PATH = "${env.PATH};C:\\Program Files (x86)\\Terraform"
     }
     // prueba de automatico
     agent any
@@ -14,13 +14,13 @@ environment {
     stages {
         stage('Verify Terraform') {
             steps {
-                bat 'terraform --version'
+                sh 'terraform --version'
             }
         }
 
         stage('Run Batch Script') {
             steps {
-                bat 'scripts\\install_nginx.bat'
+                sh 'setup_nginx.sh'
             }
         }
         
@@ -33,9 +33,9 @@ environment {
 
         stage('Initialize and Plan') {
             steps {
-                bat 'terraform init'
-                bat 'terraform plan -out tfplan'
-                bat 'terraform show -no-color tfplan > tfplan.txt'
+                sh 'terraform init'
+                sh 'terraform plan -out tfplan'
+                sh 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
 
@@ -57,7 +57,7 @@ environment {
 
         stage('Apply') {
             steps {
-                bat 'terraform apply -auto-approve'
+                sh 'terraform apply -auto-approve'
             }
         }
     }
