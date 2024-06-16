@@ -54,7 +54,7 @@ resource "null_resource" "create_hello_world" {
       connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = file("key_pair.pem")
+      private_key = file("/home/vboxuser/Downloads/key_pair.pem")
       host        = aws_instance.nginx_server.public_ip
     }
     inline = [
