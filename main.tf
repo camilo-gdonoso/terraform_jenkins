@@ -53,8 +53,9 @@ resource "null_resource" "create_hello_world" {
   provisioner "remote-exec" {
       connection {
       type        = "ssh"
-      user        = "ec2-user"
-      private_key = file("/home/vboxuser/Downloads/key_pair.pem")
+      user        = "ubuntu"
+      private_key = "${file("key_pair.pem")}"
+      timeout = "1m"
       host        = aws_instance.nginx_server.public_ip
     }
     inline = [
