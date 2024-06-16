@@ -3,21 +3,51 @@ provider "aws" {
   region = "us-east-1"
 }
 
+resource "aws_security_group" "allow_ssh_ping" {
+  name        = "allow-ssh-ping"
+  description = "Permite tráfico SSH y ICMP (ping)"
+  
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Permite el tráfico SSH desde cualquier lugar
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]  # Permite el tráfico ICMP desde cualquier lugar
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_instance" "nginx_server" {
   ami           = "ami-04b70fa74e45c3917"
   instance_type = "t2.micro"
-    user_data = <<-EOF
-              #!/bin/bash
-              sudo yum update -y
-              sudo amazon-linux-extras install nginx1.12 -y
-              echo "<html><body><h1>Hello, World</h1></body></html>" > /usr/share/nginx/html/index.html
-              sudo systemctl start nginx
-              sudo systemctl enable nginx
-              EOF
+  key_name      = "key_pair"
+  security_groups = [aws_security_group.allow_ssh_ping.name]
+
+  user_data = <<-EOF
+    #!/bin/bash
+    sudo yum update -y
+    sudo amazon-linux-extras install nginx1.12 -y
+    sudo systemctl start nginx
+    sudo systemctl enable nginx
+  EOF
+
   tags = {
-    Name = "HelloWorldServer 333"
+    Name = "nginx_server bkn"
   }
 }
+
 output "instance_ip" {
   value = aws_instance.nginx_server.public_ip
 }
