@@ -54,7 +54,7 @@ resource "null_resource" "create_hello_world" {
       connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = "${file("key_pair.pem")}"
+      private_key = file("/home/vboxuser/Downloads/key_pair.pem")
       timeout = "1m"
       host        = aws_instance.nginx_server.public_ip
     }
