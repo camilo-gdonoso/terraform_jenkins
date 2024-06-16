@@ -51,6 +51,12 @@ resource "null_resource" "create_hello_world" {
   depends_on = [aws_instance.nginx_server]
 
   provisioner "remote-exec" {
+      connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file("key_pair.pem")
+      host        = self.public_ip
+    }
     inline = [
       "echo '<html><body><h1>Hello world</h1></body></html>' | sudo tee /usr/share/nginx/html/index.html",
       "sudo systemctl restart nginx",
