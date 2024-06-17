@@ -44,8 +44,10 @@ pipeline {
             steps {
                 dir('EKS') {
                     try {
-                        sh 'terraform plan -out=tfplan'
-                    } catch (Exception e) {
+                        sh 'terraform plan'
+                    }
+                    input(message: "Are you sure to proceed?", ok: "Proceed")
+                    catch (Exception e) {
                         throw error "Error during terraform plan: ${e.message}"
                         }
                 }
@@ -53,15 +55,13 @@ pipeline {
         }
         stage('Applying the Infrastructure') {
             steps {
-                dir('EKS') {
-                    script {
+                dir('EKS') { 
                     try {
-                        sh 'terraform apply -auto-approve "tfplan"'
+                        sh 'terraform $action -auto-approve'
                     } catch (Exception e) {
                             error "Error during terraform apply: ${e.message}"
                     } finally {
                             sh 'rm -f tfplan'
-                    }
                     }
                 }
             }
