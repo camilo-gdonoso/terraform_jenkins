@@ -46,10 +46,10 @@ pipeline {
                     try {
                         sh 'terraform plan'
                     }
-                    input(message: "Are you sure to proceed?", ok: "Proceed")
                     catch (Exception e) {
                         throw error "Error during terraform plan: ${e.message}"
                         }
+                    input(message: "Are you sure to proceed?", ok: "Proceed")
                 }
             }
         }
