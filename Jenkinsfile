@@ -62,9 +62,9 @@ pipeline {
         stage('Deploying Nginx Application') {
             steps {
                 dir('EKS/ConfigurationFiles') {
-                    sh 'aws eks update-kubeconfig --name my-eks-cluster'
-                    sh 'kubectl apply -f deployment.yaml --validate=false'
-                    sh 'kubectl apply -f service.yaml --validate=false'
+                    sh 'aws eks --region us-east-1 update-kubeconfig --name my-eks-cluster'
+                    sh 'kubectl apply -f deployment.yaml'
+                    sh 'kubectl apply -f service.yaml'
                 }
             }
         }
