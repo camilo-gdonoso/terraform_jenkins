@@ -44,15 +44,15 @@ pipeline {
             steps{
                 script{
                     dir('EKS'){
-                        sh 'terraform plan'
+                        sh 'terraform plan -out=tfplan'
                     }
                     input(message: "Are you sure to proceed?", ok: "Proceed")
                 }
             }
         }
-        stage('Apply/Destroy EKS Cluster') {
+        stage('Applicando la Infra en EKS Cluster') {
             steps{
-                sh "terraform $TERRAFORM_ACTION --auto-approve"
+                sh "terraform apply "tfplan""
             }
         }
         stage('Deploying Nginx Application') {
