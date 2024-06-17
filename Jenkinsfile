@@ -50,13 +50,9 @@ pipeline {
                 }
             }
         }
-        stage('Creating/Destroying an EKS Cluster'){
+        stage('Apply/Destroy EKS Cluster') {
             steps{
-                script{
-                    dir('EKS') {
-                        sh 'terraform $action --auto-approve'
-                    }
-                }
+                sh "terraform $TERRAFORM_ACTION --auto-approve"
             }
         }
         stage('Deploying Nginx Application') {
