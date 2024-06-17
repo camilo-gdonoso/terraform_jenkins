@@ -43,13 +43,27 @@ pipeline {
         stage('Previewing the Infrastructure') {
             steps {
                 dir('EKS') {
-                    sh 'terraform plan -out=tfplan'
+                    try {
+                        sh 'terraform plan -out=tfplan'
+                    } catch (Exception e) {
+                        throw error "Error during terraform plan: ${e.message}"
+                        }
                 }
             }
         }
         stage('Applying the Infrastructure') {
             steps {
-                sh 'terraform apply "tfplan"'
+                dir('EKS') {
+                    script {
+                    try {
+                        sh 'terraform apply -auto-approve "tfplan"'
+                    } catch (Exception e) {
+                            error "Error during terraform apply: ${e.message}"
+                    } finally {
+                            sh 'rm -f tfplan'
+                    }
+                    }
+                }
             }
         }
         stage('Deploying Nginx Application') {
