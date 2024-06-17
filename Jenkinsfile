@@ -40,15 +40,12 @@ pipeline {
                 }
             }
         }
-        stage('Previewing the Infrastructure') {
-            steps {
-                dir('EKS') {
-                    try {
+        stage('Planificando Terraform y confirmando'){
+            steps{
+                script{
+                    dir('EKS'){
                         sh 'terraform plan'
                     }
-                    catch (Exception e) {
-                        throw error "Error during terraform plan: ${e.message}"
-                        }
                     input(message: "Are you sure to proceed?", ok: "Proceed")
                 }
             }
