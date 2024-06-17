@@ -45,12 +45,11 @@ pipeline {
                 dir('EKS') {
                     sh 'terraform plan -out=tfplan'
                 }
-                input message: "Are you sure to proceed?", ok: "Yes"
             }
         }
         stage('Applying the Infrastructure') {
             steps {
-                sh 'terraform apply tfplan'
+                sh 'terraform apply "tfplan"'
             }
         }
         stage('Deploying Nginx Application') {
