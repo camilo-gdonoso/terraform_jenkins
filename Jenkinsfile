@@ -40,29 +40,25 @@ pipeline {
                 }
             }
         }
-        stage('Previewing the Infra using Terraform'){
-            steps{
-                script{
-                    dir('EKS'){
-                        sh 'terraform plan -out=tfplan'
-                    }
-                    input(message: "Are you sure to proceed?", ok: "Proceed")
+        stage('Previewing the Infrastructure') {
+            steps {
+                dir('EKS') {
+                    sh 'terraform plan -out=tfplan'
                 }
+                input message: "Are you sure to proceed?", ok: "Yes"
             }
         }
-        stage('Applicando la Infra en EKS Cluster') {
-            steps{
-                sh "terraform apply "tfplan""
+        stage('Applying the Infrastructure') {
+            steps {
+                sh 'terraform apply tfplan'
             }
         }
         stage('Deploying Nginx Application') {
-            steps{
-                script{
-                    dir('EKS/ConfigurationFiles') {
-                        sh 'aws eks update-kubeconfig --name my-eks-cluster'
-                        sh 'kubectl apply -f deployment.yaml'
-                        sh 'kubectl apply -f service.yaml'
-                    }
+            steps {
+                dir('EKS/ConfigurationFiles') {
+                    sh 'aws eks update-kubeconfig --name my-eks-cluster'
+                    sh 'kubectl apply -f deployment.yaml'
+                    sh 'kubectl apply -f service.yaml'
                 }
             }
         }
