@@ -50,15 +50,11 @@ pipeline {
                 }
             }
         }
-        stage('Applying the Infrastructure') {
-            steps {
-                dir('EKS') { 
-                    try {
-                        sh 'terraform $action -auto-approve'
-                    } catch (Exception e) {
-                            error "Error during terraform apply: ${e.message}"
-                    } finally {
-                            sh 'rm -f tfplan'
+        stage('Creating/Destroying an EKS Cluster'){
+            steps{
+                script{
+                    dir('EKS') {
+                        sh 'terraform $action --auto-approve'
                     }
                 }
             }
